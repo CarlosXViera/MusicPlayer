@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <title>Music Player</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <script src="jquery-2.1.4.min.js"></script>
+    <script src="d3.min.js"></script>
+    <script src="http://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+    <script src="mp.js"></script>
+    <link rel="stylesheet" type="text/css" href="mp.css">
+</head>
+
+<body id="body">
+
+    <div>
+        <select name="tracks" id="tracks"> </select>
+    </div>
+    <!-- using a 16:9 ratio for a canvas ensures the entire playing surface is visible on all mobile devices -->
+    <svg version="1.1" id="svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 480 270" preserveAspectRatio="xMinYMin meet" style="position:absolute;">
+        <rect id="pl_bg" x="10" y="10" width="460" height="250" fill="#FFF" fill-opacity="0.2" visibility="hidden" />
+        <!-- using a 16:9 ratio for a canvas ensures the entire playing surface is visible on all mobile devices -->
+
+        <g id="button" style="visibility:hidden;">
+            <g filter="url(#playerLighting)">
+                <circle id="outer" class="crosshairs" cx="240" cy="135" r="115" stroke="#EA83B5" stroke-width="3" fill="#EA83B5" />
+                <path id="arc" class="crosshairs" d="" fill="blue" transform="translate(240,135)" />
+            </g>
+            <!-- <path id="arc" d="" fill="blue" transform="translate(240,135)"  style="cursor: crosshair;") /> -->
+            <circle id="inner" cx="240" cy="135" r="100" stroke="#1E90FF" stroke-width="3" fill="#0069B0" filter="url(#playerLighting)" />
+        </g>
+
+        <polygon id="play" class="control" fill="#000" stroke="#000" stroke-width="1" points="225,110,225,160,270,135" stroke-linejoin="round" fill-opacity="1.0" />
+
+        <g id="pause" class="control" fill="#000" stroke="#000" stroke-width="1">
+            <rect class="pause" stile="visibility:hidden" x="224" y="115" width="12" height="45" />
+            <rect class="pause" stile="visibility:hidden" x="244" y="115" width="12" height="45" />
+        </g>
+
+        <g id="exit">
+            <rect class="exit" stile="visibility:hidden" width="2" height="40" transform="translate(435 16.5) rotate(-45)" fill="#000" />
+            <!--(angle, y: less->down,-->
+            <rect class="exit" stile="visibility:hidden" width="2" height="40" transform="translate(463.5 15) rotate(45)" fill="#000" />
+            <rect class="exit" stile="visibility:hidden" x="435" y="15" width="30" height="30" fill="#000" fill-opacity="0" />
+            <!--width=1.42*(x2-x1)
+    <!--starting point for rotation:-->
+        </g>
+
+        <defs>
+            <filter id="playerLighting" filterUnits="userSpaceOnUse" x="0" y="0">
+                <!-- This dummy SMIL animation keeps filters redrawn in Chrome 
+                <animate attributeName="x" from="0" to="0" dur="10s" repeatCount="indefinite" /> -->
+                <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur" />
+                <feOffset in="blur" dx="0.2" dy="0.2" result="offsetBlur" />
+                <feSpecularLighting in="blur" surfaceScale="15" specularConstant="2" specularExponent="60" lighting-color="#bbbbbb" result="specOut">
+                    <fePointLight x="5000" y="-50000" z="70000" />
+                </feSpecularLighting>
+                <feComposite in="specOut" in2="SourceAlpha" operator="in" result="specOut" />
+                <feComposite in="SourceGraphic" in2="specOut" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="litPaint" />
+                <feMerge>
+                    <feMergeNode in="offsetBlur" />
+                    <feMergeNode in="litPaint" />
+                </feMerge>
+            </filter>
+            <radialGradient id="playerInteriorGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="95%">
+                <stop offset="0%" style="stop-color:rgb(0,255,255);
+                                         top-opacity:0" />
+                <stop offset="90%" style="stop-color:rgb(0,117,255);stop-opacity:1" />
+            </radialGradient>
+
+        </defs>
+
+    </svg>
+
+</body>
+
+</html>

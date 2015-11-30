@@ -1,0 +1,30 @@
+body{
+	margin:0;
+	background:#000;
+}
+
+#tracks{
+	display:block;
+	position:absolute;
+	z-index:1000;
+	background:#EA83b5;
+
+}
+
+.control{
+	visibility:hidden;
+}
+
+
+.crosshairs{
+	cursor:crosshair;
+}
+
+.exit{
+    visibility:hidden;
+}
+
+.pause{
+    visibility:hidden;
+}
+
